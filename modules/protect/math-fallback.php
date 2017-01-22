@@ -17,10 +17,6 @@ if ( ! class_exists( 'Jetpack_Protect_Math_Authenticate' ) ) {
 			self::$loaded = 1;
 
 			add_action( 'login_form', array( $this, 'math_form' ) );
-
-			if( isset( $_POST[ 'jetpack_protect_process_math_form' ] ) ) {
-				add_action( 'init', array( $this, 'process_generate_math_page' ) );
-			}
 		}
 
 		/**
@@ -90,7 +86,7 @@ if ( ! class_exists( 'Jetpack_Protect_Math_Authenticate' ) ) {
 			);
 		}
 
-		public function process_generate_math_page() {
+		static function process_generate_math_page() {
 			$salt        = get_site_option( 'jetpack_protect_key' ) . get_site_option( 'admin_email' );
 			$ans         = (int)$_POST['jetpack_protect_num'];
 			$salted_ans  = sha1( $salt . $ans );

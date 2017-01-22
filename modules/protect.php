@@ -335,9 +335,13 @@ class Jetpack_Protect_Module {
 			$this->block_with_math();
 		}
 
-		if ( ( 1 == $use_math || 1 == $this->block_login_with_math ) && isset( $_POST['log'] ) ) {
+		if ( ( 1 == $use_math || 1 == $this->block_login_with_math ) ) {
 			include_once dirname( __FILE__ ) . '/protect/math-fallback.php';
-			Jetpack_Protect_Math_Authenticate::math_authenticate();
+			if ( isset( $_POST['log'] ) ) {
+				Jetpack_Protect_Math_Authenticate::math_authenticate();
+			} elseif( isset( $_POST[ 'jetpack_protect_process_math_form' ] ) ) {
+				Jetpack_Protect_Math_Authenticate::process_generate_math_page();
+			}
 		}
 
 		return $user;
