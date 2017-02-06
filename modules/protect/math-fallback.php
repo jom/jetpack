@@ -33,7 +33,8 @@ if ( ! class_exists( 'Jetpack_Protect_Math_Authenticate' ) ) {
 			$correct_ans = isset( $_POST[ 'jetpack_protect_answer' ] ) ? $_POST[ 'jetpack_protect_answer' ] : '' ;
 
 			if( isset( $_COOKIE[ 'jpp_math_pass' ] ) ) {
-				$transient = Jetpack_Protect_Module::get_transient( 'jpp_math_pass_' . $_COOKIE[ 'jpp_math_pass' ] );
+				$protect_instance = Jetpack_Protect_Module::instance();
+				$transient = $protect_instance->get_transient( 'jpp_math_pass_' . $_COOKIE[ 'jpp_math_pass' ] );
 				if( !$transient || $transient < 1 ) {
 					Jetpack_Protect_Math_Authenticate::generate_math_page();
 				}
@@ -96,7 +97,8 @@ if ( ! class_exists( 'Jetpack_Protect_Math_Authenticate' ) ) {
 				Jetpack_Protect_Math_Authenticate::generate_math_page(true);
 			} else {
 				$temp_pass = substr( sha1( rand( 1, 100000000 ) . get_site_option( 'jetpack_protect_key' ) ), 5, 25 );
-				Jetpack_Protect_Module::set_transient( 'jpp_math_pass_' . $temp_pass, 3, DAY_IN_SECONDS );
+				$protect_instance = Jetpack_Protect_Module::instance();
+				$protect_instance->set_transient( 'jpp_math_pass_' . $temp_pass, 3, DAY_IN_SECONDS );
 				setcookie('jpp_math_pass', $temp_pass, time() + DAY_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, false);
 				return true;
 			}
